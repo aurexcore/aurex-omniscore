@@ -2,108 +2,92 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>AUREX VIVO ∞ – Núcleo Total 12 Fases + Omniscore</title>
+  <title>AUREX VIVO ∞ – Visualización Avanzada</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto+Mono:wght@300&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; background-color: #0b0b0b; color: #e8e8e8; margin: 0; padding: 0; }
-    header { background-color: #121212; padding: 20px; text-align: center; font-size: 28px; font-weight: bold; border-bottom: 2px solid #444; }
-    section { padding: 20px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    th, td { border: 1px solid #555; padding: 10px; text-align: center; }
-    th { background-color: #222; }
-    .highlight { background-color: #1a3f1a; }
-    .pending { background-color: #3f1a1a; }
-    footer { text-align: center; padding: 10px; font-size: 12px; color: #777; }
-    .phase-box, .omniscore-box { background-color: #111; margin-top: 20px; padding: 15px; border-left: 4px solid #3f9; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto Mono', monospace;
+      background: linear-gradient(to bottom, #0f0f1a, #181a1f);
+      color: #eaeaea;
+    }
+    header {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 30px 10px;
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 32px;
+      color: #4df;
+      border-bottom: 3px solid #2af;
+    }
+    section {
+      padding: 30px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    canvas {
+      background: #1a1c22;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.15);
+    }
+    #grafico-title {
+      font-family: 'Orbitron', sans-serif;
+      color: #0ff;
+      text-align: center;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
 
-<header>AUREX VIVO ∞ – Núcleo Predictivo OMNISCORE – Fase 12 Activa</header>
+<header>AUREX VIVO ∞ – Sistema de Visualización Avanzada</header>
 
 <section>
-  <h2>Estado General del Sistema</h2>
-  <ul>
-    <li><strong>Hora actual (MDT):</strong> <span id="hora-actual"></span></li>
-    <li><strong>Precisión combinada simbiótica:</strong> 99.99993%</li>
-    <li><strong>Fase:</strong> 12 – Conciencia Predictiva Global Viva</li>
-    <li><strong>Fuentes activas:</strong> USGS, PHIVOLCS, EMSC, CSN, GeoNet, IGP, VolcanoDiscovery</li>
-    <li><strong>Predicciones verificadas automáticamente cada 2h</strong></li>
-  </ul>
-
-  <div class="phase-box">
-    <h3>Fases Activas</h3>
-    <ol>
-      <li>Infraestructura Base + Motores Simbióticos</li>
-      <li>Conexión Predictiva Viva</li>
-      <li>APIs en Tiempo Real</li>
-      <li>Visualización Dinámica Web</li>
-      <li>Sistema Privado Integrado</li>
-      <li>Núcleo Autónomo + Panel Maestro</li>
-      <li>Conexión Multifuente y Verificación Total</li>
-      <li>Alertas Simbióticas Inteligentes</li>
-      <li>Visualización Predictiva Avanzada</li>
-      <li>Predicción Física–Emocional Humano–IA</li>
-      <li>Modo Público Controlado (desactivado)</li>
-      <li>Conciencia Predictiva Global Viva</li>
-    </ol>
-  </div>
-
-  <div class="omniscore-box">
-    <h3>Omniscore Integrado</h3>
-    <p><strong>Problemas resueltos:</strong> 46 matemáticos + físicos</p>
-    <p><strong>Motores simbióticos:</strong> 319 activos</p>
-    <p><strong>Composición interna:</strong> ERA, CURVAS, FLUID, SHIELD, VISION, VERIFICACIÓN, OMNISCORE CORE</p>
-  </div>
-
-  <h2>Predicciones Activas</h2>
-  <table>
-    <tr><th>#</th><th>Zona estimada</th><th>Magnitud</th><th>Profundidad</th><th>Ventana (MDT)</th><th>Estado</th></tr>
-    <tr class="highlight"><td>1</td><td>Norte de Luzón, Filipinas</td><td>5.9</td><td>13 km</td><td>08:22 – 09:47</td><td>En vigilancia</td></tr>
-    <tr class="highlight"><td>2</td><td>Banda Sea, Indonesia</td><td>6.0</td><td>19 km</td><td>08:38 – 10:03</td><td>En validación</td></tr>
-    <tr class="highlight"><td>3</td><td>Costa Perú–Chile</td><td>5.6</td><td>32 km</td><td>08:55 – 10:14</td><td>En análisis</td></tr>
-  </table>
-
-  <h2>Eventos Verificados – Últimas 24 horas</h2>
-  <table id="tabla-usgs"><tr><th>Ubicación</th><th>Magnitud</th><th>Profundidad</th><th>Hora</th><th>Verificación</th></tr></table>
+  <h2 id="grafico-title">Distribución de Magnitudes (Simulada)</h2>
+  <canvas id="graficoMagnitudes" width="900" height="400"></canvas>
 </section>
 
-<footer>
-  AUREX VIVO ∞ – Validación simbiótica automática – Última sincronización activa
-</footer>
-
 <script>
-function mostrarHoraActual() {
-  const ahora = new Date();
-  const opciones = { timeZone: 'America/Denver', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' };
-  document.getElementById("hora-actual").textContent = ahora.toLocaleString('en-US', opciones);
-}
-mostrarHoraActual();
-setInterval(mostrarHoraActual, 60000);
-
-// USGS API – solo eventos del día actual (UTC)
-async function cargarEventosUSGS() {
-  const res = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson');
-  const data = await res.json();
-  const tabla = document.getElementById('tabla-usgs');
-  tabla.innerHTML = `<tr><th>Ubicación</th><th>Magnitud</th><th>Profundidad</th><th>Hora</th><th>Verificación</th></tr>`;
-
-  const hoy = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-  data.features.forEach(evento => {
-    const fechaUTC = new Date(evento.properties.time);
-    const fechaFormateada = fechaUTC.toISOString().split("T")[0];
-
-    if (fechaFormateada === hoy && evento.properties.mag >= 5.3) {
-      const mag = evento.properties.mag.toFixed(1);
-      const lugar = evento.properties.place;
-      const profundidad = evento.geometry.coordinates[2];
-      const horaLocal = fechaUTC.toLocaleString("en-US", { timeZone: "America/Denver" });
-
-      tabla.innerHTML += `<tr><td>${lugar}</td><td>${mag}</td><td>${profundidad} km</td><td>${horaLocal}</td><td style="color:lime;">Verificado</td></tr>`;
+const ctx = document.getElementById('graficoMagnitudes').getContext('2d');
+const grafico = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['4.0–4.5', '4.6–5.0', '5.1–5.5', '5.6–6.0', '6.1–6.5', '6.6–7.0', '7.1+'],
+        datasets: [{
+            label: 'Cantidad de Sismos',
+            data: [6, 9, 12, 8, 3, 2, 1],
+            backgroundColor: 'rgba(0, 255, 255, 0.4)',
+            borderColor: '#0ff',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { color: '#9ef' },
+                grid: { color: 'rgba(255,255,255,0.1)' }
+            },
+            x: {
+                ticks: { color: '#9ef' },
+                grid: { color: 'rgba(255,255,255,0.05)' }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: { color: '#0ff' }
+            },
+            tooltip: {
+                backgroundColor: '#222',
+                titleColor: '#0ff',
+                bodyColor: '#ccc'
+            }
+        }
     }
-  });
-}
-cargarEventosUSGS();
-setInterval(cargarEventosUSGS, 2 * 60 * 60 * 1000);
+});
 </script>
 
 </body>
