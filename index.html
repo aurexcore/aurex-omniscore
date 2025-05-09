@@ -23,7 +23,7 @@
 <section>
   <h2>Estado General del Sistema</h2>
   <ul>
-    <li><strong>Hora actual (MDT):</strong> 9 mayo 2025 – 7:32 AM</li>
+    <li><strong>Hora actual (MDT):</strong> <span id="hora-actual"></span></li>
     <li><strong>Precisión combinada simbiótica:</strong> 99.99993%</li>
     <li><strong>Fase:</strong> 12 – Conciencia Predictiva Global Viva</li>
     <li><strong>Fuentes activas:</strong> USGS, PHIVOLCS, EMSC, CSN, GeoNet, IGP, VolcanoDiscovery</li>
@@ -99,6 +99,15 @@ async function cargarEventosUSGS() {
 }
 cargarEventosUSGS();
 setInterval(cargarEventosUSGS, 2 * 60 * 60 * 1000);
+</script>
+<script>
+function mostrarHoraActual() {
+  const ahora = new Date();
+  const opciones = { timeZone: 'America/Denver', weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
+  document.getElementById('hora-actual').textContent = ahora.toLocaleString('en-US', opciones);
+}
+mostrarHoraActual();
+setInterval(mostrarHoraActual, 60000); // actualiza cada 1 min
 </script>
 
 </body>
