@@ -5,16 +5,25 @@
   <title>Motor ERA – Hipótesis de Riemann</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    :root {
+      --bg-dark: #0d1117;
+      --bg-panel: #161b22;
+      --highlight: #00f7ff;
+      --accent: #ff5071;
+      --card-bg: #1f2933;
+      --text: #e8e8e8;
+      --muted: #999;
+    }
+
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #0d1117;
-      color: #e8e8e8;
+      background-color: var(--bg-dark);
+      color: var(--text);
     }
 
-    /* Encabezado superior */
     header {
-      background-color: #161b22;
+      background-color: var(--bg-panel);
       display: flex;
       align-items: center;
       padding: 15px;
@@ -25,49 +34,51 @@
       font-size: 24px;
       cursor: pointer;
       margin-right: 20px;
-      color: #00f7ff;
-      border: none;
+      color: var(--highlight);
       background: none;
+      border: none;
     }
 
     h1 {
-      margin: 0;
       font-size: 20px;
-      color: #00f7ff;
+      color: var(--highlight);
+      margin: 0;
     }
 
-    /* Menú lateral oculto */
+    /* Sidebar */
     .sidebar {
       height: 100%;
       width: 0;
       position: fixed;
       top: 0;
       left: 0;
-      background-color: #161b22;
+      background-color: var(--bg-panel);
       overflow-x: hidden;
       transition: 0.3s;
       padding-top: 60px;
-      border-right: 1px solid #2e3540;
       z-index: 1000;
     }
 
+    .sidebar.open {
+      width: 250px;
+    }
+
     .sidebar a {
-      padding: 12px 30px;
+      display: block;
+      padding: 15px 30px;
+      color: var(--muted);
       text-decoration: none;
       font-size: 16px;
-      color: #ccc;
-      display: block;
-      transition: 0.3s;
+      transition: 0.2s;
     }
 
     .sidebar a:hover {
       background-color: #1f2933;
-      color: #fff;
+      color: white;
     }
 
     .main-content {
       padding: 30px;
-      margin-left: 0;
       transition: margin-left .3s;
     }
 
@@ -82,24 +93,29 @@
       font-size: 16px;
       border-radius: 5px;
       border: none;
-      background-color: #1f2933;
-      color: #fff;
+      background-color: var(--card-bg);
+      color: white;
     }
 
     button {
       padding: 12px 20px;
       font-size: 16px;
-      background-color: #ff5071;
+      background-color: var(--accent);
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       margin-left: 10px;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #e44665;
     }
 
     #resultado {
       margin-top: 30px;
-      background-color: #161b22;
+      background-color: var(--bg-panel);
       padding: 20px;
       border-radius: 10px;
     }
@@ -107,29 +123,36 @@
     #total {
       font-weight: bold;
       font-size: 18px;
-      color: #00f7ff;
+      color: var(--highlight);
       margin-bottom: 15px;
     }
 
     #lista {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
       gap: 10px;
     }
 
     .primo-card {
-      background-color: #1f2933;
-      padding: 8px 12px;
-      border-radius: 5px;
+      background-color: var(--card-bg);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
       font-weight: bold;
-      color: #e2e2e2;
+      font-size: 16px;
+      transition: transform 0.2s;
+    }
+
+    .primo-card:hover {
+      transform: scale(1.1);
+      background-color: #26323f;
     }
 
     #leyenda {
       margin-top: 40px;
       font-size: 14px;
       font-style: italic;
-      color: #888;
+      color: var(--muted);
       text-align: center;
     }
   </style>
@@ -143,8 +166,7 @@
 
   <div id="sidebar" class="sidebar">
     <a href="#" onclick="mostrar('buscador')">Buscador de Primos</a>
-    <a href="#" onclick="mostrar('factorizacion')">Factorización (Próximamente)</a>
-    <a href="#" onclick="mostrar('simbolico')">Análisis Simbólico</a>
+    <a href="#" onclick="mostrar('factorizacion')">Factorización</a>
     <a href="#" onclick="mostrar('visualizacion')">Visualización Riemann</a>
     <a href="#" onclick="mostrar('configuracion')">Configuración</a>
   </div>
@@ -164,37 +186,32 @@
     </section>
 
     <section id="factorizacion" style="display:none">
-      <h2>Factorización (en desarrollo)</h2>
+      <h2>Factorización</h2>
       <p>Próximamente podrás factorizar cualquier número con precisión simbiótica.</p>
-    </section>
-
-    <section id="simbolico" style="display:none">
-      <h2>Análisis Simbólico</h2>
-      <p>Explora estructuras numéricas con base simbiótica ERA.</p>
     </section>
 
     <section id="visualizacion" style="display:none">
       <h2>Visualización Riemann</h2>
-      <p>Próximamente: Gráficas y estructuras de la función zeta.</p>
+      <p>Explora patrones invisibles revelados por la función zeta.</p>
     </section>
 
     <section id="configuracion" style="display:none">
       <h2>Configuración</h2>
-      <p>Personaliza la experiencia simbiótica ERA a tu medida.</p>
+      <p>Personaliza el comportamiento y diseño del motor ERA.</p>
     </section>
   </div>
 
   <script>
     function toggleSidebar() {
       const sidebar = document.getElementById("sidebar");
-      sidebar.style.width = sidebar.style.width === "250px" ? "0" : "250px";
+      sidebar.classList.toggle("open");
     }
 
     function mostrar(seccion) {
       const secciones = document.querySelectorAll("section");
       secciones.forEach(s => s.style.display = "none");
       document.getElementById(seccion).style.display = "block";
-      toggleSidebar();
+      document.getElementById("sidebar").classList.remove("open");
     }
 
     function esPrimo(n) {
