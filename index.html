@@ -90,4 +90,161 @@
       padding: 12px 20px;
       font-size: 16px;
       background-color: #ff5071;
-      color: white
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #e44665;
+    }
+
+    #resultado {
+      margin-top: 30px;
+      background-color: #161b22;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    #total {
+      font-weight: bold;
+      font-size: 18px;
+      color: #00f7ff;
+      margin-bottom: 15px;
+    }
+
+    #lista {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: flex-start;
+    }
+
+    .primo-card {
+      background-color: #1f2933;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 16px;
+      color: #e2e2e2;
+      display: inline-block;
+      min-width: 110px;
+      text-align: center;
+      box-sizing: border-box;
+      transition: transform 0.2s;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      white-space: normal;
+    }
+
+    .primo-card:hover {
+      transform: scale(1.08);
+      background-color: #26323f;
+    }
+
+    #leyenda {
+      margin-top: 40px;
+      font-size: 14px;
+      font-style: italic;
+      color: #999;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    <h1>Motor ERA – Buscador de Números Primos</h1>
+  </header>
+
+  <div id="sidebar" class="sidebar">
+    <a href="#" onclick="mostrar('buscador')">Buscador de Primos</a>
+    <a href="#" onclick="mostrar('factorizacion')">Factorización</a>
+    <a href="#" onclick="mostrar('visualizacion')">Visualización Riemann</a>
+    <a href="#" onclick="mostrar('configuracion')">Configuración</a>
+  </div>
+
+  <div class="main-content">
+    <section id="buscador">
+      <div class="inputs">
+        <input type="number" id="inicio" placeholder="Número inicial">
+        <input type="number" id="fin" placeholder="Número final">
+        <button onclick="buscarPrimos()">Encontrar Primos</button>
+      </div>
+      <div id="resultado">
+        <div id="total">Total: 0 primos encontrados</div>
+        <div id="lista"></div>
+      </div>
+      <div id="leyenda">Estos resultados son posibles gracias a la estructura matemática revelada por la Hipótesis de Riemann.</div>
+    </section>
+
+    <section id="factorizacion" style="display:none">
+      <h2>Factorización</h2>
+      <p>Próximamente podrás factorizar cualquier número con precisión simbiótica.</p>
+    </section>
+
+    <section id="visualizacion" style="display:none">
+      <h2>Visualización Riemann</h2>
+      <p>Explora patrones invisibles revelados por la función zeta.</p>
+    </section>
+
+    <section id="configuracion" style="display:none">
+      <h2>Configuración</h2>
+      <p>Personaliza el comportamiento y diseño del motor ERA.</p>
+    </section>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("open");
+    }
+
+    function mostrar(seccion) {
+      const secciones = document.querySelectorAll("section");
+      secciones.forEach(s => s.style.display = "none");
+      document.getElementById(seccion).style.display = "block";
+      document.getElementById("sidebar").classList.remove("open");
+    }
+
+    function esPrimo(n) {
+      if (n < 2) return false;
+      for (let i = 2; i <= Math.sqrt(n); i++) {
+        if (n % i === 0) return false;
+      }
+      return true;
+    }
+
+    function buscarPrimos() {
+      const inicio = parseInt(document.getElementById("inicio").value);
+      const fin = parseInt(document.getElementById("fin").value);
+      const lista = document.getElementById("lista");
+      const total = document.getElementById("total");
+      lista.innerHTML = "";
+
+      if (isNaN(inicio) || isNaN(fin) || inicio > fin) {
+        total.innerText = "Error: revisa los valores ingresados.";
+        return;
+      }
+
+      let primos = [];
+      for (let i = inicio; i <= fin; i++) {
+        if (esPrimo(i)) primos.push(i);
+      }
+
+      total.innerText = `Total: ${primos.length} primos encontrados`;
+
+      primos.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "primo-card";
+        card.textContent = p;
+        lista.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
