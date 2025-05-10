@@ -2,59 +2,73 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Motor ERA – Hipótesis de Riemann</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background-color: #0d1117;
       color: #e8e8e8;
-      display: flex;
     }
 
-    /* Menú lateral */
-    .sidebar {
-      width: 250px;
+    /* Encabezado superior */
+    header {
       background-color: #161b22;
-      height: 100vh;
-      position: fixed;
-      left: 0;
-      top: 0;
-      padding-top: 20px;
-      border-right: 1px solid #2e3540;
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #2e3540;
     }
 
-    .sidebar h2 {
-      color: #00f7ff;
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .sidebar ul {
-      list-style-type: none;
-      padding: 0;
-    }
-
-    .sidebar ul li {
-      padding: 15px 25px;
+    .menu-btn {
+      font-size: 24px;
       cursor: pointer;
-      color: #ccc;
+      margin-right: 20px;
+      color: #00f7ff;
+      border: none;
+      background: none;
     }
 
-    .sidebar ul li:hover {
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      color: #00f7ff;
+    }
+
+    /* Menú lateral oculto */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #161b22;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      border-right: 1px solid #2e3540;
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      padding: 12px 30px;
+      text-decoration: none;
+      font-size: 16px;
+      color: #ccc;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
       background-color: #1f2933;
       color: #fff;
     }
 
     .main-content {
-      margin-left: 250px;
-      padding: 40px;
-      width: 100%;
-    }
-
-    h1 {
-      color: #00f7ff;
+      padding: 30px;
+      margin-left: 0;
+      transition: margin-left .3s;
     }
 
     .inputs {
@@ -64,7 +78,7 @@
     input {
       padding: 10px;
       margin: 5px;
-      width: 160px;
+      width: 180px;
       font-size: 16px;
       border-radius: 5px;
       border: none;
@@ -88,8 +102,6 @@
       background-color: #161b22;
       padding: 20px;
       border-radius: 10px;
-      max-height: 400px;
-      overflow-y: auto;
     }
 
     #total {
@@ -97,6 +109,20 @@
       font-size: 18px;
       color: #00f7ff;
       margin-bottom: 15px;
+    }
+
+    #lista {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .primo-card {
+      background-color: #1f2933;
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-weight: bold;
+      color: #e2e2e2;
     }
 
     #leyenda {
@@ -109,32 +135,68 @@
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <h2>Motor ERA</h2>
-    <ul>
-      <li onclick="alert('Ya estás en el Buscador de Primos')">Buscador de Primos</li>
-      <li onclick="alert('Próximamente: Factorización')">Factorización</li>
-      <li onclick="alert('Próximamente: Análisis Simbólico')">Análisis Simbólico</li>
-      <li onclick="alert('Próximamente: Visualización Riemann')">Visualización Riemann</li>
-      <li onclick="alert('Configuración avanzada (en desarrollo)')">Configuración</li>
-    </ul>
+
+  <header>
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    <h1>Motor ERA – Buscador de Números Primos</h1>
+  </header>
+
+  <div id="sidebar" class="sidebar">
+    <a href="#" onclick="mostrar('buscador')">Buscador de Primos</a>
+    <a href="#" onclick="mostrar('factorizacion')">Factorización (Próximamente)</a>
+    <a href="#" onclick="mostrar('simbolico')">Análisis Simbólico</a>
+    <a href="#" onclick="mostrar('visualizacion')">Visualización Riemann</a>
+    <a href="#" onclick="mostrar('configuracion')">Configuración</a>
   </div>
 
   <div class="main-content">
-    <h1>Buscador Infalible de Números Primos</h1>
-    <div class="inputs">
-      <input type="number" id="inicio" placeholder="Número inicial">
-      <input type="number" id="fin" placeholder="Número final">
-      <button onclick="buscarPrimos()">Encontrar Primos</button>
-    </div>
-    <div id="resultado">
-      <div id="total">Total: 0 primos encontrados</div>
-      <div id="lista"></div>
-    </div>
-    <div id="leyenda">Estos resultados son posibles gracias a la estructura matemática revelada por la Hipótesis de Riemann.</div>
+    <section id="buscador">
+      <div class="inputs">
+        <input type="number" id="inicio" placeholder="Número inicial">
+        <input type="number" id="fin" placeholder="Número final">
+        <button onclick="buscarPrimos()">Encontrar Primos</button>
+      </div>
+      <div id="resultado">
+        <div id="total">Total: 0 primos encontrados</div>
+        <div id="lista"></div>
+      </div>
+      <div id="leyenda">Estos resultados son posibles gracias a la estructura matemática revelada por la Hipótesis de Riemann.</div>
+    </section>
+
+    <section id="factorizacion" style="display:none">
+      <h2>Factorización (en desarrollo)</h2>
+      <p>Próximamente podrás factorizar cualquier número con precisión simbiótica.</p>
+    </section>
+
+    <section id="simbolico" style="display:none">
+      <h2>Análisis Simbólico</h2>
+      <p>Explora estructuras numéricas con base simbiótica ERA.</p>
+    </section>
+
+    <section id="visualizacion" style="display:none">
+      <h2>Visualización Riemann</h2>
+      <p>Próximamente: Gráficas y estructuras de la función zeta.</p>
+    </section>
+
+    <section id="configuracion" style="display:none">
+      <h2>Configuración</h2>
+      <p>Personaliza la experiencia simbiótica ERA a tu medida.</p>
+    </section>
   </div>
 
   <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.style.width = sidebar.style.width === "250px" ? "0" : "250px";
+    }
+
+    function mostrar(seccion) {
+      const secciones = document.querySelectorAll("section");
+      secciones.forEach(s => s.style.display = "none");
+      document.getElementById(seccion).style.display = "block";
+      toggleSidebar();
+    }
+
     function esPrimo(n) {
       if (n < 2) return false;
       for (let i = 2; i <= Math.sqrt(n); i++) {
@@ -161,7 +223,13 @@
       }
 
       total.innerText = `Total: ${primos.length} primos encontrados`;
-      lista.innerHTML = primos.join(", ");
+
+      primos.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "primo-card";
+        card.textContent = p;
+        lista.appendChild(card);
+      });
     }
   </script>
 </body>
