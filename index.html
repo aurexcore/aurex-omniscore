@@ -1,243 +1,149 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Motor ERA – Hipótesis de Riemann</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0d1117;
-      color: #e8e8e8;
-    }
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #0d1117;
+    color: #e8e8e8;
+  }
 
-    header {
-      background-color: #161b22;
-      display: flex;
-      align-items: center;
-      padding: 15px;
-      border-bottom: 1px solid #2e3540;
-    }
+  header {
+    background-color: #161b22;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #2e3540;
+  }
 
-    .menu-btn {
-      font-size: 24px;
-      cursor: pointer;
-      margin-right: 20px;
-      color: #00f7ff;
-      background: none;
-      border: none;
-    }
+  .menu-btn {
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 20px;
+    color: #00f7ff;
+    background: none;
+    border: none;
+  }
 
-    h1 {
-      font-size: 20px;
-      color: #00f7ff;
-      margin: 0;
-    }
+  h1 {
+    font-size: 20px;
+    color: #00f7ff;
+    margin: 0;
+  }
 
-    .sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: #161b22;
-      overflow-x: hidden;
-      transition: 0.3s;
-      padding-top: 60px;
-      z-index: 1000;
-    }
+  .sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #161b22;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+    z-index: 1000;
+  }
 
-    .sidebar.open {
-      width: 250px;
-    }
+  .sidebar.open {
+    width: 250px;
+  }
 
-    .sidebar a {
-      display: block;
-      padding: 15px 30px;
-      color: #999;
-      text-decoration: none;
-      font-size: 16px;
-      transition: 0.2s;
-    }
+  .sidebar a {
+    display: block;
+    padding: 15px 30px;
+    color: #999;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.2s;
+  }
 
-    .sidebar a:hover {
-      background-color: #1f2933;
-      color: #ffffff;
-    }
+  .sidebar a:hover {
+    background-color: #1f2933;
+    color: #ffffff;
+  }
 
-    .main-content {
-      padding: 30px;
-      transition: margin-left .3s;
-    }
+  .main-content {
+    padding: 30px;
+    transition: margin-left .3s;
+  }
 
-    .inputs {
-      margin: 20px 0;
-    }
+  .inputs {
+    margin: 20px 0;
+  }
 
-    input {
-      padding: 10px;
-      margin: 5px;
-      width: 180px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: none;
-      background-color: #1f2933;
-      color: #ffffff;
-    }
+  input {
+    padding: 10px;
+    margin: 5px;
+    width: 180px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    background-color: #1f2933;
+    color: #ffffff;
+  }
 
-    button {
-      padding: 12px 20px;
-      font-size: 16px;
-      background-color: #ff5071;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-left: 10px;
-      transition: background-color 0.2s;
-    }
+  button {
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #ff5071;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.2s;
+  }
 
-    button:hover {
-      background-color: #e44665;
-    }
+  button:hover {
+    background-color: #e44665;
+  }
 
-    #resultado {
-      margin-top: 30px;
-      background-color: #161b22;
-      padding: 20px;
-      border-radius: 10px;
-    }
+  #resultado {
+    margin-top: 30px;
+    background-color: #161b22;
+    padding: 20px;
+    border-radius: 10px;
+  }
 
-    #total {
-      font-weight: bold;
-      font-size: 18px;
-      color: #00f7ff;
-      margin-bottom: 15px;
-    }
+  #total {
+    font-weight: bold;
+    font-size: 18px;
+    color: #00f7ff;
+    margin-bottom: 15px;
+  }
 
-    #lista {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-      gap: 10px;
-    }
+  #lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+  }
 
-    .primo-card {
-      background-color: #1f2933;
-      padding: 10px;
-      border-radius: 8px;
-      text-align: center;
-      font-weight: bold;
-      font-size: 16px;
-      transition: transform 0.2s;
-      color: #e2e2e2;
-    }
+  .primo-card {
+    background-color: #1f2933;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #e2e2e2;
+    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    transition: transform 0.2s;
+    box-sizing: border-box;
+  }
 
-    .primo-card:hover {
-      transform: scale(1.1);
-      background-color: #26323f;
-    }
+  .primo-card:hover {
+    transform: scale(1.1);
+    background-color: #26323f;
+    white-space: normal;
+  }
 
-    #leyenda {
-      margin-top: 40px;
-      font-size: 14px;
-      font-style: italic;
-      color: #999;
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
-
-  <header>
-    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <h1>Motor ERA – Buscador de Números Primos</h1>
-  </header>
-
-  <div id="sidebar" class="sidebar">
-    <a href="#" onclick="mostrar('buscador')">Buscador de Primos</a>
-    <a href="#" onclick="mostrar('factorizacion')">Factorización</a>
-    <a href="#" onclick="mostrar('visualizacion')">Visualización Riemann</a>
-    <a href="#" onclick="mostrar('configuracion')">Configuración</a>
-  </div>
-
-  <div class="main-content">
-    <section id="buscador">
-      <div class="inputs">
-        <input type="number" id="inicio" placeholder="Número inicial">
-        <input type="number" id="fin" placeholder="Número final">
-        <button onclick="buscarPrimos()">Encontrar Primos</button>
-      </div>
-      <div id="resultado">
-        <div id="total">Total: 0 primos encontrados</div>
-        <div id="lista"></div>
-      </div>
-      <div id="leyenda">Estos resultados son posibles gracias a la estructura matemática revelada por la Hipótesis de Riemann.</div>
-    </section>
-
-    <section id="factorizacion" style="display:none">
-      <h2>Factorización</h2>
-      <p>Próximamente podrás factorizar cualquier número con precisión simbiótica.</p>
-    </section>
-
-    <section id="visualizacion" style="display:none">
-      <h2>Visualización Riemann</h2>
-      <p>Explora patrones invisibles revelados por la función zeta.</p>
-    </section>
-
-    <section id="configuracion" style="display:none">
-      <h2>Configuración</h2>
-      <p>Personaliza el comportamiento y diseño del motor ERA.</p>
-    </section>
-  </div>
-
-  <script>
-    function toggleSidebar() {
-      const sidebar = document.getElementById("sidebar");
-      sidebar.classList.toggle("open");
-    }
-
-    function mostrar(seccion) {
-      const secciones = document.querySelectorAll("section");
-      secciones.forEach(s => s.style.display = "none");
-      document.getElementById(seccion).style.display = "block";
-      document.getElementById("sidebar").classList.remove("open");
-    }
-
-    function esPrimo(n) {
-      if (n < 2) return false;
-      for (let i = 2; i <= Math.sqrt(n); i++) {
-        if (n % i === 0) return false;
-      }
-      return true;
-    }
-
-    function buscarPrimos() {
-      const inicio = parseInt(document.getElementById("inicio").value);
-      const fin = parseInt(document.getElementById("fin").value);
-      const lista = document.getElementById("lista");
-      const total = document.getElementById("total");
-      lista.innerHTML = "";
-
-      if (isNaN(inicio) || isNaN(fin) || inicio > fin) {
-        total.innerText = "Error: revisa los valores ingresados.";
-        return;
-      }
-
-      let primos = [];
-      for (let i = inicio; i <= fin; i++) {
-        if (esPrimo(i)) primos.push(i);
-      }
-
-      total.innerText = `Total: ${primos.length} primos encontrados`;
-
-      primos.forEach(p => {
-        const card = document.createElement("div");
-        card.className = "primo-card";
-        card.textContent = p;
-        lista.appendChild(card);
-      });
-    }
-  </script>
-</body>
-</html>
+  #leyenda {
+    margin-top: 40px;
+    font-size: 14px;
+    font-style: italic;
+    color: #999;
+    text-align: center;
+  }
+</style>
