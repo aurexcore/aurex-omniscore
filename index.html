@@ -2,26 +2,76 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Motor ERA – Primos Infalibles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motor ERA – Hipótesis de Riemann</title>
   <style>
     body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
       background-color: #0d1117;
       color: #e8e8e8;
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      padding: 50px;
+      display: flex;
     }
+
+    /* Menú lateral */
+    .sidebar {
+      width: 250px;
+      background-color: #161b22;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      padding-top: 20px;
+      border-right: 1px solid #2e3540;
+    }
+
+    .sidebar h2 {
+      color: #00f7ff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .sidebar ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 15px 25px;
+      cursor: pointer;
+      color: #ccc;
+    }
+
+    .sidebar ul li:hover {
+      background-color: #1f2933;
+      color: #fff;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 40px;
+      width: 100%;
+    }
+
     h1 {
       color: #00f7ff;
     }
+
+    .inputs {
+      margin: 20px 0;
+    }
+
     input {
       padding: 10px;
-      margin: 10px;
-      width: 150px;
+      margin: 5px;
+      width: 160px;
       font-size: 16px;
       border-radius: 5px;
       border: none;
+      background-color: #1f2933;
+      color: #fff;
     }
+
     button {
       padding: 12px 20px;
       font-size: 16px;
@@ -30,35 +80,58 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      margin-left: 20px;
+      margin-left: 10px;
     }
+
     #resultado {
       margin-top: 30px;
-      text-align: left;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
       background-color: #161b22;
       padding: 20px;
       border-radius: 10px;
+      max-height: 400px;
+      overflow-y: auto;
     }
+
     #total {
       font-weight: bold;
       font-size: 18px;
-      margin-bottom: 15px;
       color: #00f7ff;
+      margin-bottom: 15px;
+    }
+
+    #leyenda {
+      margin-top: 40px;
+      font-size: 14px;
+      font-style: italic;
+      color: #888;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <h1>Motor ERA – Buscador Infalible de Números Primos</h1>
-  <input type="number" id="inicio" placeholder="Número inicial">
-  <input type="number" id="fin" placeholder="Número final">
-  <button onclick="buscarPrimos()">Encontrar Primos</button>
+  <div class="sidebar">
+    <h2>Motor ERA</h2>
+    <ul>
+      <li onclick="alert('Ya estás en el Buscador de Primos')">Buscador de Primos</li>
+      <li onclick="alert('Próximamente: Factorización')">Factorización</li>
+      <li onclick="alert('Próximamente: Análisis Simbólico')">Análisis Simbólico</li>
+      <li onclick="alert('Próximamente: Visualización Riemann')">Visualización Riemann</li>
+      <li onclick="alert('Configuración avanzada (en desarrollo)')">Configuración</li>
+    </ul>
+  </div>
 
-  <div id="resultado">
-    <div id="total">Total: 0 primos encontrados</div>
-    <div id="lista"></div>
+  <div class="main-content">
+    <h1>Buscador Infalible de Números Primos</h1>
+    <div class="inputs">
+      <input type="number" id="inicio" placeholder="Número inicial">
+      <input type="number" id="fin" placeholder="Número final">
+      <button onclick="buscarPrimos()">Encontrar Primos</button>
+    </div>
+    <div id="resultado">
+      <div id="total">Total: 0 primos encontrados</div>
+      <div id="lista"></div>
+    </div>
+    <div id="leyenda">Estos resultados son posibles gracias a la estructura matemática revelada por la Hipótesis de Riemann.</div>
   </div>
 
   <script>
