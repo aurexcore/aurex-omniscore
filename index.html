@@ -2,222 +2,92 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Motor ERA – Comparador Riemann</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de π(x) y li(x)</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0d1117;
-      color: #e8e8e8;
-    }
-    header {
-      background-color: #161b22;
-      display: flex;
-      align-items: center;
-      padding: 15px;
-      border-bottom: 1px solid #2e3540;
-    }
-    .menu-btn {
-      font-size: 24px;
-      cursor: pointer;
-      margin-right: 20px;
-      color: #00f7ff;
-      background: none;
-      border: none;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      padding: 20px;
     }
     h1 {
-      font-size: 20px;
-      color: #00f7ff;
-      margin: 0;
+      color: #444;
     }
-    .sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: #161b22;
-      overflow-x: hidden;
-      transition: 0.3s;
-      padding-top: 60px;
-      z-index: 1000;
-    }
-    .sidebar.open {
-      width: 250px;
-    }
-    .sidebar a {
-      display: block;
-      padding: 15px 30px;
-      color: #999;
-      text-decoration: none;
-      font-size: 16px;
-      transition: 0.2s;
-    }
-    .sidebar a:hover {
-      background-color: #1f2933;
-      color: #ffffff;
-    }
-    .main-content {
-      padding: 30px;
-      transition: margin-left .3s;
-    }
-    input {
+    input, button {
       padding: 10px;
-      margin: 5px;
-      width: 180px;
       font-size: 16px;
-      border-radius: 5px;
-      border: none;
-      background-color: #1f2933;
-      color: #ffffff;
+      margin: 5px 0;
     }
-    button {
-      padding: 12px 20px;
-      font-size: 16px;
-      background-color: #ff5071;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-left: 10px;
-      transition: background-color 0.2s;
-    }
-    button:hover {
-      background-color: #e44665;
-    }
-    #resultadoComparador, #tablaComparacion {
-      margin-top: 30px;
-      background-color: #161b22;
-      padding: 20px;
-      border-radius: 10px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    th, td {
+    #resultado {
+      margin-top: 20px;
       padding: 10px;
-      border: 1px solid #333;
-      text-align: center;
-    }
-    th {
-      background-color: #1f2933;
-      color: #00f7ff;
-    }
-    .note {
-      font-style: italic;
-      color: #999;
-      margin-top: 10px;
+      background-color: #e2e2e2;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
+  <h1>Calculadora de π(x) y li(x)</h1>
+  <p>Ingresa un valor para x:</p>
+  <input type="number" id="valorX" value="1000000">
+  <button onclick="calcular()">Calcular</button>
+  <div id="resultado"></div>
 
-<header>
-  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-  <h1>Motor ERA – Comparador de Primos y li(x)</h1>
-</header>
-
-<div id="sidebar" class="sidebar">
-  <a href="#" onclick="mostrar('comparador')">Comparar π(x) vs li(x)</a>
-  <a href="#" onclick="mostrar('tabla')">Ver Tabla Comparativa</a>
-</div>
-
-<div class="main-content">
-  <!-- Comparador dinámico -->
-  <section id="comparador">
-    <h2>Comparación entre π(x) y li(x)</h2>
-    <p>Ingresa un número para comparar el valor exacto de primos (π(x)) con la estimación logarítmica (li(x)).</p>
-    <input type="number" id="valorComparar" placeholder="Ej: 1000000">
-    <button onclick="compararValores()">Calcular</button>
-    <div id="resultadoComparador"></div>
-  </section>
-
-  <!-- Tabla estática con valores conocidos -->
-  <section id="tabla" style="display:none;">
-    <h2>Tabla comparativa π(x) vs li(x)</h2>
-    <div id="tablaComparacion">
-      <table>
-        <thead>
-          <tr>
-            <th>x</th>
-            <th>π(x)</th>
-            <th>li(x)</th>
-            <th>Diferencia</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>10⁴</td><td>1229</td><td>1246.14</td><td>-17.14</td></tr>
-          <tr><td>10⁵</td><td>9592</td><td>9629.81</td><td>-37.81</td></tr>
-          <tr><td>10⁶</td><td>78498</td><td>78627.55</td><td>-129.55</td></tr>
-          <tr><td>4×10⁶</td><td>283146</td><td>283352.25</td><td>-206.25</td></tr>
-          <tr><td>10⁷</td><td>664579</td><td>664918.41</td><td>-339.41</td></tr>
-        </tbody>
-      </table>
-      <p class="note">Valores calculados con precisión simbólica. Confirman el patrón predicho por la Hipótesis de Riemann.</p>
-    </div>
-  </section>
-</div>
-
-<script>
-  function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("open");
-  }
-
-  function mostrar(id) {
-    document.querySelectorAll("section").forEach(s => s.style.display = "none");
-    document.getElementById(id).style.display = "block";
-    document.getElementById("sidebar").classList.remove("open");
-  }
-
-  function esPrimo(n) {
-    if (n < 2) return false;
-    if (n === 2) return true;
-    if (n % 2 === 0) return false;
-    for (let i = 3; i <= Math.sqrt(n); i += 2) {
-      if (n % i === 0) return false;
-    }
-    return true;
-  }
-
-  function contarPrimosHasta(x) {
-    let contador = 0;
-    for (let i = 2; i <= x; i++) {
-      if (esPrimo(i)) contador++;
-    }
-    return contador;
-  }
-
-  function calcularLi(x) {
-    let suma = 0;
-    let paso = x < 100000 ? 1 : Math.floor(x / 10000);
-    for (let t = 2; t <= x; t += paso) {
-      suma += 1 / Math.log(t);
-    }
-    return suma * paso;
-  }
-
-  function compararValores() {
-    const x = parseInt(document.getElementById("valorComparar").value);
-    const resultado = document.getElementById("resultadoComparador");
-    if (isNaN(x) || x < 2) {
-      resultado.innerHTML = "<p style='color:orange;'>Por favor ingresa un número válido mayor que 1.</p>";
-      return;
+  <script>
+    // Función para verificar si un número es primo
+    function esPrimo(n) {
+      if (n < 2) return false;
+      if (n === 2) return true;
+      if (n % 2 === 0) return false;
+      for (let i = 3; i <= Math.sqrt(n); i += 2) {
+        if (n % i === 0) return false;
+      }
+      return true;
     }
 
-    const piX = contarPrimosHasta(x);
-    const liX = calcularLi(x);
-    const diferencia = piX - liX;
+    // Función para calcular π(x)
+    function calcularPi(x) {
+      let contador = 0;
+      for (let i = 2; i <= x; i++) {
+        if (esPrimo(i)) contador++;
+      }
+      return contador;
+    }
 
-    resultado.innerHTML = `
-      <p><strong>π(${x})</strong> = ${piX} (valor exacto)</p>
-      <p><strong>li(${x})</strong> ≈ ${liX.toFixed(2)} (estimación simbólica)</p>
-      <p><strong>Diferencia:</strong> ${diferencia.toFixed(2)}</p>
-      <p style="color:#00f7ff;"><em>Este resultado confirma experimentalmente el patrón estructural predicho por la Hipótesis de Riemann.</em></p>
-    `;
-  }
-</script>
+    // Función para calcular li(x) utilizando el método del punto medio
+    function calcularLi(x) {
+      const n = 100000; // Número de subintervalos
+      const a = 2;
+      const b = x;
+      const h = (b - a) / n;
+      let suma = 0;
+      for (let i = 0; i < n; i++) {
+        const xi = a + i * h;
+        const xi1 = xi + h;
+        const xm = (xi + xi1) / 2;
+        suma += (1 / Math.log(xm)) * h;
+      }
+      return suma;
+    }
+
+    // Función principal para calcular y mostrar los resultados
+    function calcular() {
+      const x = parseInt(document.getElementById('valorX').value);
+      if (isNaN(x) || x < 2) {
+        alert('Por favor, ingresa un número válido mayor o igual a 2.');
+        return;
+      }
+
+      const pi = calcularPi(x);
+      const li = calcularLi(x);
+      const diferencia = pi - li;
+
+      document.getElementById('resultado').innerHTML = `
+        <p><strong>π(${x})</strong> = ${pi}</p>
+        <p><strong>li(${x})</strong> ≈ ${li.toFixed(2)}</p>
+        <p><strong>Diferencia:</strong> ${diferencia.toFixed(2)}</p>
+      `;
+    }
+  </script>
 </body>
 </html>
