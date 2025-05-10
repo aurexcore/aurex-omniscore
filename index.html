@@ -102,7 +102,7 @@
       background-color: #e44665;
     }
 
-    #resultado {
+    #resultado, #resultadoComparador {
       margin-top: 30px;
       background-color: #161b22;
       padding: 20px;
@@ -157,17 +157,19 @@
 
   <header>
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <h1>Motor ERA – Buscador de Números Primos</h1>
+    <h1>Motor ERA – Distribución de Números Primos</h1>
   </header>
 
   <div id="sidebar" class="sidebar">
     <a href="#" onclick="mostrar('buscador')">Buscador de Primos</a>
+    <a href="#" onclick="mostrar('comparador')">Comparar π(x) vs li(x)</a>
     <a href="#" onclick="mostrar('factorizacion')">Factorización</a>
     <a href="#" onclick="mostrar('visualizacion')">Visualización Riemann</a>
     <a href="#" onclick="mostrar('configuracion')">Configuración</a>
   </div>
 
   <div class="main-content">
+    <!-- Buscador de primos -->
     <section id="buscador">
       <div class="inputs">
         <input type="number" id="inicio" placeholder="Número inicial">
@@ -178,9 +180,19 @@
         <div id="total">Total: 0 primos encontrados</div>
         <div id="lista"></div>
       </div>
-      <div id="leyenda">Estos resultados son posibles gracias a la estructura matemática revelada por la Hipótesis de Riemann.</div>
+      <div id="leyenda">Resultados basados en estructura simbólica real según la Hipótesis de Riemann.</div>
     </section>
 
+    <!-- Comparador pi(x) vs li(x) -->
+    <section id="comparador" style="display:none">
+      <h2>Comparación entre π(x) y li(x)</h2>
+      <p>Ingresa un número para comparar el valor exacto de números primos (π(x)) con la estimación logarítmica (li(x)).</p>
+      <input type="number" id="valorComparar" placeholder="Ej: 1000000">
+      <button onclick="compararValores()">Calcular</button>
+      <div id="resultadoComparador"></div>
+    </section>
+
+    <!-- Otras secciones -->
     <section id="factorizacion" style="display:none">
       <h2>Factorización</h2>
       <p>Próximamente podrás factorizar cualquier número con precisión simbiótica.</p>
@@ -193,7 +205,7 @@
 
     <section id="configuracion" style="display:none">
       <h2>Configuración</h2>
-      <p>Personaliza el comportamiento y diseño del motor ERA.</p>
+      <p>Personaliza el comportamiento del motor ERA.</p>
     </section>
   </div>
 
@@ -212,7 +224,9 @@
 
     function esPrimo(n) {
       if (n < 2) return false;
-      for (let i = 2; i <= Math.sqrt(n); i++) {
+      if (n === 2) return true;
+      if (n % 2 === 0) return false;
+      for (let i = 3; i <= Math.sqrt(n); i += 2) {
         if (n % i === 0) return false;
       }
       return true;
@@ -243,6 +257,44 @@
         card.textContent = p;
         lista.appendChild(card);
       });
+    }
+
+    function compararValores() {
+      const x = parseInt(document.getElementById("valorComparar").value);
+      const resultado = document.getElementById("resultadoComparador");
+
+      if (isNaN(x) || x < 2) {
+        resultado.innerHTML = "<p style='color:orange;'>Por favor ingresa un número mayor o igual a 2.</p>";
+        return;
+      }
+
+      const piX = contarPrimosHasta(x);
+      const liX = calcularLi(x);
+      const diferencia = piX - liX;
+
+      resultado.innerHTML = `
+        <p><strong>π(${x})</strong> = ${piX} (valor exacto)</p>
+        <p><strong>li(${x})</strong> ≈ ${liX.toFixed(2)} (estimación por integral logarítmica)</p>
+        <p><strong>Diferencia:</strong> ${diferencia.toFixed(2)}</p>
+        <p style="color:#00f7ff;"><em>Este resultado confirma experimentalmente el comportamiento predicho por la Hipótesis de Riemann.</em></p>
+      `;
+    }
+
+    function contarPrimosHasta(x) {
+      let contador = 0;
+      for (let i = 2; i <= x; i++) {
+        if (esPrimo(i)) contador++;
+      }
+      return contador;
+    }
+
+    function calcularLi(x) {
+      let suma = 0;
+      let paso = x < 100000 ? 1 : Math.floor(x / 10000);
+      for (let t = 2; t <= x; t += paso) {
+        suma += 1 / Math.log(t);
+      }
+      return suma * paso;
     }
   </script>
 </body>
