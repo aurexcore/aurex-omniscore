@@ -86,7 +86,7 @@
     button:hover {
       background-color: #e44665;
     }
-    #resultadoComparador, #tablaComparacion {
+    #resultadoComparador, #tablaComparacion, #resultadoPrimos {
       margin-top: 30px;
       background-color: #161b22;
       padding: 20px;
@@ -121,13 +121,24 @@
 </header>
 
 <div id="sidebar" class="sidebar">
+  <a href="#" onclick="mostrar('primos')">Calcular Números Primos</a>
   <a href="#" onclick="mostrar('comparador')">Comparar π(x) vs li(x)</a>
   <a href="#" onclick="mostrar('tabla')">Ver Tabla Comparativa</a>
 </div>
 
 <div class="main-content">
+  <!-- Sección para calcular números primos entre dos valores -->
+  <section id="primos">
+    <h2>Calcular Números Primos entre dos valores</h2>
+    <p>Ingresa los valores inicial y final para obtener los números primos en ese rango.</p>
+    <input type="number" id="inicio" placeholder="Valor inicial">
+    <input type="number" id="fin" placeholder="Valor final">
+    <button onclick="calcularPrimos()">Calcular</button>
+    <div id="resultadoPrimos"></div>
+  </section>
+
   <!-- Comparador dinámico -->
-  <section id="comparador">
+  <section id="comparador" style="display:none;">
     <h2>Comparación entre π(x) y li(x)</h2>
     <p>Ingresa un número para comparar el valor exacto de primos (π(x)) con la estimación logarítmica (li(x)).</p>
     <input type="number" id="valorComparar" placeholder="Ej: 1000000">
@@ -182,16 +193,33 @@
     return true;
   }
 
-  function contarPrimosHasta(x) {
-    let contador = 0;
-    for (let i = 2; i <= x; i++) {
-      if (esPrimo(i)) contador++;
+  function calcularPrimos() {
+    const inicio = parseInt(document.getElementById("inicio").value);
+    const fin = parseInt(document.getElementById("fin").value);
+    const resultado = document.getElementById("resultadoPrimos");
+
+    if (isNaN(inicio) || isNaN(fin) || inicio < 2 || fin < inicio) {
+      resultado.innerHTML = "<p style='color:orange;'>Por favor ingresa un rango válido (inicio ≥ 2 y fin ≥ inicio).</p>";
+      return;
     }
-    return contador;
+
+    resultado.innerHTML = "<p>Calculando...</p>";
+
+    setTimeout(() => {
+      const primos = [];
+      for (let i = inicio; i <= fin; i++) {
+        if (esPrimo(i)) primos.push(i);
+      }
+      resultado.innerHTML = `
+        <p><strong>Primos entre ${inicio} y ${fin}:</strong></p>
+        <p>${primos.join(', ')}</p>
+        <p><strong>Total de primos:</strong> ${primos.length}</p>
+      `;
+    }, 100);
   }
 
   async function obtenerLi(x) {
-    const appid = YYW32K-YLA5H344QT; // Reemplaza con tu AppID de WolframAlpha
+    const appid = 'YYW32K-YLA5H344QT'; // Reemplaza con tu AppID de WolframAlpha
     const input = `integrate 1/ln(t) dt from 2 to ${x}`;
     const url = `https://api.wolframalpha.com/v2/query?appid=${appid}&input=${encodeURIComponent(input)}&output=json`;
 
@@ -218,29 +246,4 @@
     const resultado = document.getElementById("resultadoComparador");
     if (isNaN(x) || x < 2) {
       resultado.innerHTML = "<p style='color:orange;'>Por favor ingresa un número válido mayor que 1.</p>";
-      return;
-    }
-
-    resultado.innerHTML = "<p>Calculando...</p>";
-
-    const piX = contarPrimosHasta(x);
-    const liX = await obtenerLi(x);
-
-    if (liX !== null) {
-      const diferencia = piX - liX;
-      resultado.innerHTML = `
-        <p><strong>π(${x})</strong> = ${piX} (valor exacto)</p>
-        <p><strong>li(${x})</strong> ≈ ${liX.toFixed(2)} (calculado con WolframAlpha)</p>
-        <p><strong>Diferencia:</strong> ${diferencia.toFixed(2)}</p>
-        <p style="color:#00f7ff;"><em>Este resultado confirma experimentalmente el patrón estructural predicho por la Hipótesis de Riemann.</em></p>
-      `;
-    } else {
-      resultado.innerHTML = `
-        <p><strong>π(${x})</strong> = ${piX} (valor exacto)</p>
-        <p><strong>li(${x})</strong> no se pudo calcular. Por favor, verifica tu AppID o intenta nuevamente más tarde.</p>
-      `;
-    }
-  }
-</script>
-</body>
-</html>
+ 
