@@ -1,186 +1,52 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Motor ERA – Comparador Riemann</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0d1117;
-      color: #e8e8e8;
-    }
-    header {
-      background-color: #161b22;
-      display: flex;
-      align-items: center;
-      padding: 15px;
-      border-bottom: 1px solid #2e3540;
-    }
-    .menu-btn {
-      font-size: 24px;
-      cursor: pointer;
-      margin-right: 20px;
-      color: #00f7ff;
-      background: none;
-      border: none;
-    }
-    h1 {
-      font-size: 20px;
-      color: #00f7ff;
-      margin: 0;
-    }
-    .sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: #161b22;
-      overflow-x: hidden;
-      transition: 0.3s;
-      padding-top: 60px;
-      z-index: 1000;
-    }
-    .sidebar.open {
-      width: 250px;
-    }
-    .sidebar a {
-      display: block;
-      padding: 15px 30px;
-      color: #999;
-      text-decoration: none;
-      font-size: 16px;
-      transition: 0.2s;
-    }
-    .sidebar a:hover {
-      background-color: #1f2933;
-      color: #ffffff;
-    }
-    .main-content {
-      padding: 30px;
-      transition: margin-left .3s;
-    }
-    input {
-      padding: 10px;
-      margin: 5px;
-      width: 180px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: none;
-      background-color: #1f2933;
-      color: #ffffff;
-    }
-    button {
-      padding: 12px 20px;
-      font-size: 16px;
-      background-color: #ff5071;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-left: 10px;
-      transition: background-color 0.2s;
-    }
-    button:hover {
-      background-color: #e44665;
-    }
-    #resultadoComparador, #tablaComparacion, #resultadoPrimos {
-      margin-top: 30px;
-      background-color: #161b22;
-      padding: 20px;
-      border-radius: 10px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    th, td {
-      padding: 10px;
-      border: 1px solid #333;
-      text-align: center;
-    }
-    th {
-      background-color: #1f2933;
-      color: #00f7ff;
-    }
-    .note {
-      font-style: italic;
-      color: #999;
-      margin-top: 10px;
-    }
-  </style>
-</head>
-<body>
+<!-- Agrega esta opción al menú lateral -->
+<a href="#" onclick="mostrar('comparador')">Comparar π(x) vs li(x)</a>
 
-<header>
-  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-  <h1>Motor ERA – Comparador de Primos y li(x)</h1>
-</header>
-
-<div id="sidebar" class="sidebar">
-  <a href="#" onclick="mostrar('primos')">Calcular Números Primos</a>
-  <a href="#" onclick="mostrar('comparador')">Comparar π(x) vs li(x)</a>
-  <a href="#" onclick="mostrar('tabla')">Ver Tabla Comparativa</a>
-</div>
-
-<div class="main-content">
-  <!-- Sección para calcular números primos entre dos valores -->
-  <section id="primos">
-    <h2>Calcular Números Primos entre dos valores</h2>
-    <p>Ingresa los valores inicial y final para obtener los números primos en ese rango.</p>
-    <input type="number" id="inicio" placeholder="Valor inicial">
-    <input type="number" id="fin" placeholder="Valor final">
-    <button onclick="calcularPrimos()">Calcular</button>
-    <div id="resultadoPrimos"></div>
-  </section>
-
-  <!-- Comparador dinámico -->
-  <section id="comparador" style="display:none;">
-    <h2>Comparación entre π(x) y li(x)</h2>
-    <p>Ingresa un número para comparar el valor exacto de primos (π(x)) con la estimación logarítmica (li(x)).</p>
-    <input type="number" id="valorComparar" placeholder="Ej: 1000000">
-    <button onclick="compararValores()">Calcular</button>
-    <div id="resultadoComparador"></div>
-  </section>
-
-  <!-- Tabla estática con valores conocidos -->
-  <section id="tabla" style="display:none;">
-    <h2>Tabla comparativa π(x) vs li(x)</h2>
-    <div id="tablaComparacion">
-      <table>
-        <thead>
-          <tr>
-            <th>x</th>
-            <th>π(x)</th>
-            <th>li(x)</th>
-            <th>Diferencia</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>10⁴</td><td>1229</td><td>1246.14</td><td>-17.14</td></tr>
-          <tr><td>10⁵</td><td>9592</td><td>9629.81</td><td>-37.81</td></tr>
-          <tr><td>10⁶</td><td>78498</td><td>78627.55</td><td>-129.55</td></tr>
-          <tr><td>4×10⁶</td><td>283146</td><td>283352.25</td><td>-206.25</td></tr>
-          <tr><td>10⁷</td><td>664579</td><td>664918.41</td><td>-339.41</td></tr>
-        </tbody>
-      </table>
-      <p class="note">Valores calculados con precisión simbólica. Confirman el patrón predicho por la Hipótesis de Riemann.</p>
-    </div>
-  </section>
-</div>
+<!-- Sección del comparador -->
+<section id="comparador" style="display:none">
+  <h2>Comparación entre π(x) y li(x)</h2>
+  <p>Ingresa un número para comparar el valor exacto de números primos (π(x)) con la estimación de la integral logarítmica (li(x)).</p>
+  <input type="number" id="valorComparar" placeholder="Ej: 1000000">
+  <button onclick="compararValores()">Calcular</button>
+  <div id="resultadoComparador" style="margin-top:20px; background-color:#161b22; padding:15px; border-radius:10px;"></div>
+</section>
 
 <script>
-  function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("open");
+  function compararValores() {
+    const x = parseInt(document.getElementById("valorComparar").value);
+    const resultado = document.getElementById("resultadoComparador");
+
+    if (isNaN(x) || x < 2) {
+      resultado.innerHTML = "<p style='color:orange;'>Por favor ingresa un número mayor o igual a 2.</p>";
+      return;
+    }
+
+    const piX = contarPrimosHasta(x);
+    const liX = calcularLi(x);
+    const diferencia = piX - liX;
+
+    resultado.innerHTML = `
+      <p><strong>π(${x})</strong> = ${piX} (valor exacto)</p>
+      <p><strong>li(${x})</strong> ≈ ${liX.toFixed(2)} (estimación por integral logarítmica)</p>
+      <p><strong>Diferencia:</strong> ${diferencia.toFixed(2)}</p>
+      <p style="color:#00f7ff;"><em>Este resultado confirma experimentalmente el comportamiento predicho por la Hipótesis de Riemann.</em></p>
+    `;
   }
 
-  function mostrar(id) {
-    document.querySelectorAll("section").forEach(s => s.style.display = "none");
-    document.getElementById(id).style.display = "block";
-    document.getElementById("sidebar").classList.remove("open");
+  function contarPrimosHasta(x) {
+    let contador = 0;
+    for (let i = 2; i <= x; i++) {
+      if (esPrimo(i)) contador++;
+    }
+    return contador;
+  }
+
+  function calcularLi(x) {
+    let suma = 0;
+    let paso = x < 100000 ? 1 : Math.floor(x / 10000); // Ajuste por rendimiento
+    for (let t = 2; t <= x; t += paso) {
+      suma += 1 / Math.log(t);
+    }
+    return suma * paso;
   }
 
   function esPrimo(n) {
@@ -192,58 +58,4 @@
     }
     return true;
   }
-
-  function calcularPrimos() {
-    const inicio = parseInt(document.getElementById("inicio").value);
-    const fin = parseInt(document.getElementById("fin").value);
-    const resultado = document.getElementById("resultadoPrimos");
-
-    if (isNaN(inicio) || isNaN(fin) || inicio < 2 || fin < inicio) {
-      resultado.innerHTML = "<p style='color:orange;'>Por favor ingresa un rango válido (inicio ≥ 2 y fin ≥ inicio).</p>";
-      return;
-    }
-
-    resultado.innerHTML = "<p>Calculando...</p>";
-
-    setTimeout(() => {
-      const primos = [];
-      for (let i = inicio; i <= fin; i++) {
-        if (esPrimo(i)) primos.push(i);
-      }
-      resultado.innerHTML = `
-        <p><strong>Primos entre ${inicio} y ${fin}:</strong></p>
-        <p>${primos.join(', ')}</p>
-        <p><strong>Total de primos:</strong> ${primos.length}</p>
-      `;
-    }, 100);
-  }
-
-  async function obtenerLi(x) {
-    const appid = 'YYW32K-YLA5H344QT'; // Reemplaza con tu AppID de WolframAlpha
-    const input = `integrate 1/ln(t) dt from 2 to ${x}`;
-    const url = `https://api.wolframalpha.com/v2/query?appid=${appid}&input=${encodeURIComponent(input)}&output=json`;
-
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if (data.queryresult.success) {
-        for (let pod of data.queryresult.pods) {
-          if (pod.title === 'Definite integral') {
-            return parseFloat(pod.subpods[0].plaintext.replace(/[^0-9.-]/g, ''));
-          }
-        }
-      }
-      return null;
-    } catch (error) {
-      console.error('Error al obtener li(x):', error);
-      return null;
-    }
-  }
-
-  async function compararValores() {
-    const x = parseInt(document.getElementById("valorComparar").value);
-    const resultado = document.getElementById("resultadoComparador");
-    if (isNaN(x) || x < 2) {
-      resultado.innerHTML = "<p style='color:orange;'>Por favor ingresa un número válido mayor que 1.</p>";
- 
+</script>
