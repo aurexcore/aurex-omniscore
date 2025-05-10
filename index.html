@@ -5,25 +5,15 @@
   <title>Motor ERA – Hipótesis de Riemann</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    :root {
-      --bg-dark: #0d1117;
-      --bg-panel: #161b22;
-      --highlight: #00f7ff;
-      --accent: #ff5071;
-      --card-bg: #1f2933;
-      --text: #e8e8e8;
-      --muted: #999;
-    }
-
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text);
+      background-color: #0d1117;
+      color: #e8e8e8;
     }
 
     header {
-      background-color: var(--bg-panel);
+      background-color: #161b22;
       display: flex;
       align-items: center;
       padding: 15px;
@@ -34,25 +24,24 @@
       font-size: 24px;
       cursor: pointer;
       margin-right: 20px;
-      color: var(--highlight);
+      color: #00f7ff;
       background: none;
       border: none;
     }
 
     h1 {
       font-size: 20px;
-      color: var(--highlight);
+      color: #00f7ff;
       margin: 0;
     }
 
-    /* Sidebar */
     .sidebar {
       height: 100%;
       width: 0;
       position: fixed;
       top: 0;
       left: 0;
-      background-color: var(--bg-panel);
+      background-color: #161b22;
       overflow-x: hidden;
       transition: 0.3s;
       padding-top: 60px;
@@ -66,7 +55,7 @@
     .sidebar a {
       display: block;
       padding: 15px 30px;
-      color: var(--muted);
+      color: #999;
       text-decoration: none;
       font-size: 16px;
       transition: 0.2s;
@@ -74,7 +63,7 @@
 
     .sidebar a:hover {
       background-color: #1f2933;
-      color: white;
+      color: #ffffff;
     }
 
     .main-content {
@@ -93,14 +82,14 @@
       font-size: 16px;
       border-radius: 5px;
       border: none;
-      background-color: var(--card-bg);
-      color: white;
+      background-color: #1f2933;
+      color: #ffffff;
     }
 
     button {
       padding: 12px 20px;
       font-size: 16px;
-      background-color: var(--accent);
+      background-color: #ff5071;
       color: white;
       border: none;
       border-radius: 5px;
@@ -115,7 +104,7 @@
 
     #resultado {
       margin-top: 30px;
-      background-color: var(--bg-panel);
+      background-color: #161b22;
       padding: 20px;
       border-radius: 10px;
     }
@@ -123,7 +112,7 @@
     #total {
       font-weight: bold;
       font-size: 18px;
-      color: var(--highlight);
+      color: #00f7ff;
       margin-bottom: 15px;
     }
 
@@ -134,13 +123,14 @@
     }
 
     .primo-card {
-      background-color: var(--card-bg);
+      background-color: #1f2933;
       padding: 10px;
       border-radius: 8px;
       text-align: center;
       font-weight: bold;
       font-size: 16px;
       transition: transform 0.2s;
+      color: #e2e2e2;
     }
 
     .primo-card:hover {
@@ -152,7 +142,7 @@
       margin-top: 40px;
       font-size: 14px;
       font-style: italic;
-      color: var(--muted);
+      color: #999;
       text-align: center;
     }
   </style>
